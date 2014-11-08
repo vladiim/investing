@@ -9,6 +9,10 @@ save.sAndP500 <- function() {
   save.asset( data.get.sAndP500(), 'sp500' )
 }
 
-save.nasdaq <- function() {
-  save.asset( data.get.nasdaq(), 'nasdaq' )
+save.dow <- function() {
+  save.asset( data.get.dow(), 'dow' )
+}
+
+save.US3Tbills <- function() {
+  save.asset( data.get.US3Tbills(), 'us.3.tbills' )
 }
