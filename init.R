@@ -11,7 +11,7 @@ library( rattle )
 library( ggplot2 )
 library( scales )
 # library( stringr )
-# library( lubridate )
+library( lubridate )
 library( dplyr )
 
 # ----------- # # ----------- # # ----------- #
@@ -50,4 +50,4 @@ setReportingWd()
 
 Quandl.auth( Sys.getenv( 'QUANDL' ) )
 
-data <- data.get.allIndexes()
+data <- data.get.allAssets()

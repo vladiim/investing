@@ -1,0 +1,14 @@
+```{r echo=TRUE}
+read_chunk('../helpers/assets.R')
+```
+
+***
+
+# S&P 500
+
+There are `{r years.sAndP}` years of data for the S&P 500.
+
+```{r fig.cap='S&P 500 % annual return', fig.path=paste0(getwd(), '/reports/output/figures/'), echo = FALSE, graph.sAndP}
+```
+
+***
