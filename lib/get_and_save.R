@@ -13,6 +13,10 @@ save.dow <- function() {
   save.asset( data.get.dow(), 'dow' )
 }
 
+save.eafe <- function() {
+  save.asset( data.get.eafe(), 'eafe' )
+}
+
 save.US3Tbills <- function() {
   save.asset( data.get.US3Tbills(), 'us.3.tbills' )
 }

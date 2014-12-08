@@ -1,26 +1,38 @@
-data.get.priceAndPerc <- function( qcode ) {
-  perc_change <- data.get.perc_change( qcode )
-  price <- data.get.price( qcode )
-  data.frame( date = price$Date, price = price$Value, perc_change = c( 0, perc_change$Value ) )
-}
+data.get.priceAndReturn <- function( qcode ) {
+  d          <- data.get.price( qcode )
+  names( d ) <- normVarNames( names( d ) )
+  d          <- arrange( d, date )
+  annual_return   <- try( ROC( d$close, type = 'discrete' ), silent = TRUE )
 
-data.get.perc_change <- function( qcode ) {
-  Quandl( qcode, transformation = 'rdiff', collapse = 'annual')
+  if ( class( annual_return ) == 'try-error' ) {
+    annual_return <- try( ROC( d$value, type = 'discrete' ), silent = TRUE )
+  }
+  if ( class( annual_return ) == 'try-error' ) {
+    annual_return <- try( ROC( d$adj_close, type = 'discrete' ), silent = TRUE )
+  }
+  d
 }
 
 data.get.price <- function( qcode ) {
-  Quandl( qcode, collapse = 'annual')
+  Quandl( qcode )
 }
 
 data.get.allAssets <- function() {
-  rbind( data.clean.sAndP500(), data.clean.dow(), data.clean.US3Tbills() )
+  sandp <- data.clean.sAndP500()
+  rbind( sandp, data.clean.dow(), data.clean.eafe(), data.clean.US3Tbills() )
 }
+
+# ------ ASX large cap
+
+data.get.asxLargeCap <- memoise( function( qcode = 'YAHOO/INDEX_AXJO' ) {
+  d <- data.get.priceAndReturn( qcode )
+  d$asset = 'ASX S&P 200'
+  d
+} )
 
 # ------ S&P 500
 data.get.sAndP500 <- function( qcode = 'YAHOO/INDEX_GSPC' ) {
-  perc_change <- data.get.perc_change( qcode )
-  price <- data.get.price( qcode )
-  data.frame( date = price$Date, price = price$Close, perc_change = c( 0, perc_change$Close ) )
+  data.get.priceAndReturn( qcode )
 }
 
 data.clean.sAndP500 <- function() {
@@ -35,8 +47,8 @@ data.dist.sAndP500 <- function() {
 }
 
 # ------ Dow
-data.get.dow <- function() {
-  data.get.priceAndPerc( 'BCB/UDJIAD1' )
+data.get.dow <- function( qcode = 'BCB/UDJIAD1' ) {
+  data.get.priceAndReturn( qcode )
 }
 
 data.clean.dow <- function() {
@@ -45,9 +57,20 @@ data.clean.dow <- function() {
   d
 }
 
+# ------ Morgan Stanley Europe Australasia Far East
+data.get.eafe <- function( qcode = 'EOD/EFU' ) {
+  data.get.priceAndReturn( qcode )
+}
+
+data.clean.eafe <- function() {
+  d <- data.getAndCleanCSV( 'eafe' )
+  d$asset = 'EAFE'
+  d
+}
+
 # ------ US 3-month T-Bills
-data.get.US3Tbills <- function() {
-  data.get.priceAndPerc( 'FRED/DTB3' )
+data.get.US3Tbills <- function( qcode = 'FRED/DTB3' ) {
+  data.get.priceAndReturn( qcode )
 }
 
 data.clean.US3Tbills <- function() {

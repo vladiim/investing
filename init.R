@@ -4,6 +4,8 @@
 # DEPENDENCIES
 
 library( Quandl )
+library( TTR )
+library( memoise )
 # library( reshape )
 library( knitr )
 library( markdown )
