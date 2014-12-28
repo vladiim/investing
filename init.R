@@ -6,6 +6,7 @@
 library( Quandl )
 library( TTR )
 library( memoise )
+library( quantmod )
 # library( reshape )
 library( knitr )
 library( markdown )
