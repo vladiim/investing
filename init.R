@@ -7,6 +7,7 @@ library( Quandl )
 library( TTR )
 library( memoise )
 library( quantmod )
+library( PerformanceAnalytics )
 # library( reshape )
 library( knitr )
 library( markdown )
@@ -52,5 +53,3 @@ source( './reports/run.R' )
 setReportingWd()
 
 Quandl.auth( Sys.getenv( 'QUANDL' ) )
-
-data <- data.get.allAssets()
