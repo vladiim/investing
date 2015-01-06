@@ -31,6 +31,11 @@ data.getVolitility <- function( d, price_name ) {
   c( NA, rollapply( d.zoo, 2, sd )[ , price_name ] )
 }
 
+# ------ All
+data.get.all.annual <- memoise( function() {
+  merge( data.get.asxLargeCap.annual(), data.get.usTotalMarket.LargeCap.annual() )
+} )
+
 # ------ ASX large cap
 
 data.get.asxLargeCap.annual <- memoise( function( qcode = 'YAHOO/INDEX_AXJO' ) {
